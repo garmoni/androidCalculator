@@ -4,7 +4,7 @@ import styles from './styles'
 
 export default function Buttons({ setNum }) {
     const calcTable = []
-    const btnCalc = ["AC","±","%","÷","mc","mr","m-","m+","7","8","9","×","4","5","6","-","1","2","3","+","0",",","="]
+    const btnCalc = ["AC","±","%","÷","mc","mr","m-","m+","7" ,"8" ,"9" ,"×","4" ,"5" ,"6" ,"-","1" ,"2" ,"3" ,"+","0" ,",","="]
     btnCalc.forEach((item, key) => {
       calcTable.push(
         <TouchableOpacity
@@ -31,7 +31,7 @@ export default function Buttons({ setNum }) {
         case "=":
           return styles.Orange
           break;
-        case "0":
+        case "0" :
           return styles.bigItem
           break;
       }

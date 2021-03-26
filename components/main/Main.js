@@ -28,6 +28,7 @@ export default function Main() {
   function setNum(num) {
     if (num === 'AC') {
       setText('0');
+      setAction(null)
       setPrev(null)
       return;
     }
@@ -114,17 +115,18 @@ export default function Main() {
       setPrev(null);
       return;
     }
+    console.log("text", text)
     if (text[text.length - 1] === ".") {
       setText(text + num);
+    } else { 
+      setText((parseFloat(parseFloat(text) + num)).toString()) 
     }
-    setText((parseFloat(parseFloat(text) + num)).toString())
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.textInput}>{text}</Text>
+      <Text style={styles.textInput}>{text!=0?text:action}</Text>
       <Buttons setNum={setNum} />
     </View>
   );
 }
-
