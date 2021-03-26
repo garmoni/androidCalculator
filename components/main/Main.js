@@ -115,7 +115,6 @@ export default function Main() {
       setPrev(null);
       return;
     }
-    console.log("text", text)
     if (text[text.length - 1] === ".") {
       setText(text + num);
     } else { 
