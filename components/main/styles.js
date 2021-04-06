@@ -10,12 +10,11 @@ const styles = StyleSheet.create({
     textInput: {
       padding: 5,
       color: '#fff',
-      fontSize: 95,
+      fontSize: 50,
       width: '100%',
       textAlign: 'right',
       overflow: 'hidden',
       height: 95,
-      lineHeight: 95,
       marginTop: 20,
     },
   });

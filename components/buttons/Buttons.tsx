@@ -2,21 +2,12 @@ import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import styles from './styles'
 
-export default function Buttons({ setNum }) {
-    const calcTable = []
+type Props = {  setNum: Function };
+
+export default function Buttons({ setNum }:Props) {
     const btnCalc = ["AC","±","%","÷","mc","mr","m-","m+","7" ,"8" ,"9" ,"×","4" ,"5" ,"6" ,"-","1" ,"2" ,"3" ,"+","0" ,",","="]
-    btnCalc.forEach((item, key) => {
-      calcTable.push(
-        <TouchableOpacity
-          onPress={() => setNum(item)}
-          title={item}
-          key={key}
-          style={[styles.Item, getStyle(item)]}
-        ><Text style={styles.ItemText}>{item}</Text>        
-        </TouchableOpacity>
-      )
-    });
-    function getStyle(num) {
+
+    function getStyle(num: string) {
       switch (num){
         case "AC":
         case "±":
@@ -37,6 +28,16 @@ export default function Buttons({ setNum }) {
       }
     }
     return (
-        <View style={styles.itemBlock}>{calcTable}</View>
+        <View style={styles.itemBlock}>
+          {btnCalc.map((item: string, key: number) => (
+              <TouchableOpacity
+                onPress={() => setNum(item)}
+                key={key}
+                style={[styles.Item, getStyle(item)]}
+              >
+                <Text style={styles.ItemText}>{item}</Text>        
+              </TouchableOpacity>
+          ))}
+      </View>
       );
 }
