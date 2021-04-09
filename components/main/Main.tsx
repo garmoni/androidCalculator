@@ -4,9 +4,10 @@ import Buttons from '../buttons/Buttons';
 import styles from './styles'
 
 export default function Main() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState('0');
   const [memory, setMemory] = useState('');
   const [values, setValues] = useState<string[]>([]);
+  const [percent, setPercent] = useState('');
   const [lastNum, setLastNum] = useState('');
   const reg = new RegExp(/[\+\-\×\÷]/);
   let arrayOfStrings: string[];
@@ -19,6 +20,7 @@ export default function Main() {
       case '×':
       case '÷':
         const lastSymbol:string = (values.slice(-1).toString())
+        if(!lastSymbol) return;
         switch(lastSymbol) {
           case '+': 
           case '-':
@@ -36,6 +38,7 @@ export default function Main() {
         setText('');
         return;
       case '±':
+        if (text === '')return;
         values.reduce(function(total:number, currentValue:string, currentIndex:number, arr:string[]) {
           switch(currentValue) {
             case '+': 
@@ -47,7 +50,7 @@ export default function Main() {
             break;
           }
           return negative;
-        }, 10);
+        }, 0);
         if(negative === undefined) negative = 0;
         values.map(function (item, key) {     
           if (key == negative){
@@ -55,28 +58,38 @@ export default function Main() {
           else values[key] = (+item * -1).toString();  
           } 
         });
+        setValues((state)=>[...state]);
         return;
       case '%':
-        setText((+text / 100).toString());
-        return;
+        values.reduce(function(total:number, currentValue:string, currentIndex:number, arr:string[]) {
+          switch(currentValue) {
+            case '+': 
+            case '-':
+            case '×':
+            case '÷':  
+              return negative = currentIndex - 1;
+            default: 
+            break;
+          }
+          return negative;
+        }, 0);
+        console.log(negative)
+        let valPercent:string[] = []
+        for(let i = 0; i <= negative; i++) {
+          valPercent.push(values[i]); 
+        }
+        setPercent(eval(valPercent.join('')));
+       console.log('valPercent', valPercent)
       case '=':
         if (text === '') return
         const operator:string = (values.slice(-1).toString())
-        switch(operator) {
-          case '+': 
-          case '-':
-          case '×':
-          case '÷':
-            return;
-          default: 
-          values.map(function (item, key) {
-            if (item == '×') values[key] = '*'; 
-            else if (item == '÷') values[key] = '/';
-          });
-          console.log(values)
-          setValues(eval(values.join('')));
-          return;
-        }
+        if (operator.match(reg))return; 
+        values.map(function (item, key) {
+          if (item == '×') values[key] = '*'; 
+          else if (item == '÷') values[key] = '/';
+        });
+        setValues(eval(values.join('')));
+        return;
       case ',':
         if (text.includes('.')) return;
         setText(text + '.');
@@ -87,7 +100,6 @@ export default function Main() {
           setText(num)
         } else  setText(text + num)
         setValues((state)=>[...state,num]);
-        console.log('values', values)
       return;
     }
   
