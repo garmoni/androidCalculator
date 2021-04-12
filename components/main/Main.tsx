@@ -25,7 +25,7 @@ export default function Main() {
       });
       return values;
   }
- 
+
   function setNum(num: string) {
     switch(num) {
       case '+': 
@@ -71,15 +71,13 @@ export default function Main() {
         const resultPersent = eval(eval(valPercent.join('')) + values[lastNumber] + procent).toString();
         return setValues(()=>[resultPersent]);
       case '=':
-        console.log('values', values)
         if (text === '') return
         const operator:string = (values.slice(-1).toString())
-        console.log('operator', text)
         if (operator.match(reg))return; 
         changeOperator()
-        const result = (eval(values.join(''))).toString();
-        console.log(result)
-        setValues(()=>[result]);
+        const result = (eval(values.join('')));
+        setValues(()=>[parseFloat(result.toFixed(2)).toString()]);
+        setText(parseFloat(result.toFixed(2)).toString());
         break;
       case ',':
         if (text.includes('.')) return;
