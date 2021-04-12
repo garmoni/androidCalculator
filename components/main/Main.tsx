@@ -7,11 +7,24 @@ export default function Main() {
   const [text, setText] = useState('0');
   const [memory, setMemory] = useState('');
   const [values, setValues] = useState<string[]>([]);
-  const [percent, setPercent] = useState('');
-  const [lastNum, setLastNum] = useState('');
-  const reg = new RegExp(/[\+\-\×\÷]/);
-  let arrayOfStrings: string[];
-  let negative:number;
+  const reg = new RegExp(/[\'+'\'-'\'×'\'÷']/);
+  const regOperator = ['+', '-', '×', '÷']
+  let lastNumber:number;
+
+  function findLastOperator(arr:string[]) {
+    for(let i = arr.length; i > 0; i--){
+      if(regOperator.includes(arr[i]))
+      return i
+    }
+  } 
+
+  function changeOperator() {
+    values.map(function (item, key) {
+      if (item == '×') values[key] = '*'; 
+        else if (item == '÷') values[key] = '/';
+      });
+      return values;
+  }
  
   function setNum(num: string) {
     switch(num) {
@@ -39,57 +52,35 @@ export default function Main() {
         return;
       case '±':
         if (text === '')return;
-        values.reduce(function(total:number, currentValue:string, currentIndex:number, arr:string[]) {
-          switch(currentValue) {
-            case '+': 
-            case '-':
-            case '×':
-            case '÷':  
-              return negative = currentIndex + 1;
-            default: 
-            break;
-          }
-          return negative;
-        }, 0);
-        if(negative === undefined) negative = 0;
+        lastNumber = findLastOperator(values);
+        if(lastNumber == undefined) return setValues([(+text * -1).toString()])
         values.map(function (item, key) {     
-          if (key == negative){
+          if (key == lastNumber + 1){
             if (values[key - 1] === '-') values[key - 1] = '+'
           else values[key] = (+item * -1).toString();  
           } 
         });
         setValues((state)=>[...state]);
-        return;
+        break;
       case '%':
-        values.reduce(function(total:number, currentValue:string, currentIndex:number, arr:string[]) {
-          switch(currentValue) {
-            case '+': 
-            case '-':
-            case '×':
-            case '÷':  
-              return negative = currentIndex - 1;
-            default: 
-            break;
-          }
-          return negative;
-        }, 0);
-        console.log(negative)
-        let valPercent:string[] = []
-        for(let i = 0; i <= negative; i++) {
-          valPercent.push(values[i]); 
-        }
-        setPercent(eval(valPercent.join('')));
-       console.log('valPercent', valPercent)
+        lastNumber = findLastOperator(values);
+        const procent = (+text / 100).toString()
+        if(lastNumber == undefined) return setValues(()=>[procent]);
+        changeOperator()
+        let valPercent:string[] = values.slice(0, lastNumber)
+        const resultPersent = eval(eval(valPercent.join('')) + values[lastNumber] + procent).toString();
+        return setValues(()=>[resultPersent]);
       case '=':
+        console.log('values', values)
         if (text === '') return
         const operator:string = (values.slice(-1).toString())
+        console.log('operator', text)
         if (operator.match(reg))return; 
-        values.map(function (item, key) {
-          if (item == '×') values[key] = '*'; 
-          else if (item == '÷') values[key] = '/';
-        });
-        setValues(eval(values.join('')));
-        return;
+        changeOperator()
+        const result = (eval(values.join(''))).toString();
+        console.log(result)
+        setValues(()=>[result]);
+        break;
       case ',':
         if (text.includes('.')) return;
         setText(text + '.');
