@@ -9,13 +9,15 @@ const styles = StyleSheet.create({
     },
     textInput: {
       padding: 5,
+      overflow: 'hidden',
+      marginTop: 20,
+    },
+    text: {
       color: '#fff',
-      fontSize: 50,
       width: '100%',
       textAlign: 'right',
-      overflow: 'hidden',
       height: 95,
-      marginTop: 20,
+      whiteSpace: 'nowrap',
     },
   });
 
