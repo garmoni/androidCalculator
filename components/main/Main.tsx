@@ -12,10 +12,10 @@ export default function Main() {
   let lastNumber:number;
 
   function getStyleText(values: string[]) {
-    if (values.length < 12 && values?.[0].length < 12) return 50
-    else if ((values.length >= 12 && values.length <= 17)||(values?.[0].length >= 12 && values?.[0].length <= 17)) return 40
-    else if ((values.length > 17 && values.length < 22)||(values?.[0].length >17 && values?.[0].length <22)) return 32
-    else if (values.length >= 22) return 24
+    if (values?.length < 12 && values?.[0].length < 12) return 50
+    else if ((values?.length >= 12 && values?.length <= 17)||(values?.[0].length >= 12 && values?.[0].length <= 17)) return 40
+    else if ((values?.length > 17 && values?.length < 22)||(values?.[0].length >17 && values?.[0].length <22)) return 32
+    else if (values?.length >= 22) return 24
   }
 
   function findLastOperator(arr:string[]) {
