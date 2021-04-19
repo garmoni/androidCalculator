@@ -65,7 +65,6 @@ export default function Main() {
         setText(text.substring(0,text.length-1));
         return;
       case '±':
-        if (text === '')return;
         lastNumber = findLastOperator(values);
         if(!lastNumber) {
           setValues([(+text * -1).toString()]);
@@ -73,6 +72,7 @@ export default function Main() {
           return;
         }
         values.map(function (item, key) {     
+          console.log(lastNumber)
           if (key == lastNumber + 1){
             if (values[key - 1] === '-') values[key - 1] = '+'
           else values[key] = (+item * -1).toString();  
