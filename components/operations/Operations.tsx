@@ -18,8 +18,7 @@ export const getStyleText = (values: string[]) => {
     values.map(function (item, key) {
       if (item == '×') values[key] = '*';
       else if (item == '÷') values[key] = '/';
+      return values;
     });
-    return values;
   }
   
-

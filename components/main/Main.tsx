@@ -73,8 +73,9 @@ export default function Main() {
         setMemory('0');
         return;
       case 'mr':
-       setValues([memory])
-       setText(memory)
+       setValues([memory]);
+       setText(memory);
+       return;
       case 'm-':
        if(memory === '0') setMemory((+text * -1).toString())
        else {
