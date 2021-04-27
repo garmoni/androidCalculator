@@ -7,7 +7,7 @@ type Props = {  setNum: Function, setLongPress: Function };
 export default function Buttons({ setNum, setLongPress }:Props) {
     const btnCalc = ["AC","±","%","÷","mc","mr","m-","m+","7" ,"8" ,"9" ,"×","4" ,"5" ,"6" ,"-","1" ,"2" ,"3" ,"+","0" ,",","="]
 
-    function getStyle(num: string) {
+    const getStyle = (num: string | undefined) => {
       switch (num){
         case "AC":
         case "±":
