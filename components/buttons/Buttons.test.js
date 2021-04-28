@@ -11,7 +11,7 @@ describe('Buttons', () => {
         expect(container).toMatchSnapshot();
     });
 
-    it('should render Buttons with Text', () => {
+    it('should work function getStyle', () => {
         render(<Buttons style={getStyle()}/>)
         expect(getStyle).toHaveBeenCalled()
     });

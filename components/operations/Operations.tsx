@@ -21,4 +21,4 @@ export const getStyleText = (values: string[]) => {
       return values;
     });
   }
-  
+

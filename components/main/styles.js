@@ -9,15 +9,18 @@ const styles = StyleSheet.create({
     },
     textInput: {
       padding: 5,
-      overflow: 'hidden',
+      overflowY: 'hidden',
       marginTop: 20,
+      display: 'flex',
+      alignItems: 'center',
+      height: 95,
+      justifyContent: 'center',
     },
     text: {
       color: '#fff',
       width: '100%',
       textAlign: 'right',
-      height: 95,
-      whiteSpace: 'nowrap',
+      whiteSpace: 'nowrap', 
     },
   });
 

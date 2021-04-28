@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import Buttons from '../buttons/Buttons';
 import { getStyleText, findLastOperator, changeOperator } from './../operations/operations';
@@ -8,8 +8,19 @@ export default function Main() {
   const [text, setText] = useState('0');
   const [memory, setMemory] = useState('0');
   const [values, setValues] = useState<string[]>(['0']);
+  const [result, setResult] = useState(0);
   const reg = new RegExp(/^[\+\-\×\÷]$/);
   let lastNumber: number;
+  const operator: string = (values.slice(-1).toString())
+
+  useEffect(() => {
+    console.log('useEffect result', result)
+    if (result !== 0){
+      setValues(() => [parseFloat(result.toFixed(2)).toString()]);
+      setText(parseFloat(result.toFixed(2)).toString());
+      console.log('useEffect result !== 0', result)
+    }    
+}, [result]);
 
   const setLongPress = (num: string) => {
     if (num === 'AC') {
@@ -41,7 +52,7 @@ export default function Main() {
         }
         setValues(values.slice(0, values.length - 1));
         setText(text.substring(0, text.length - 1));
-        return;
+        break;
       case '±':
         lastNumber = findLastOperator(values);
         if (!lastNumber) {
@@ -71,44 +82,54 @@ export default function Main() {
         return setValues(() => [resultPersent]);
       case 'mc':
         setMemory('0');
-        return;
+        break;
       case 'mr':
-       setValues([memory]);
-       setText(memory);
-       return;
+        setValues([memory]);
+        setText(memory);
+        break;
       case 'm-':
-       if(memory === '0') setMemory((+text * -1).toString())
-       else {
-        setMemory(eval(memory + (+text * -1)).toString())
-       }
-        return;
-      case 'm+':
-        if(memory === '0') {setMemory(text); console.log('memory', memory)}
+        if (memory === '0') setMemory((+text * -1).toString())
         else {
-         setMemory(eval(memory + '+' + text).toString())
-         console.log('memory', memory)
+          setMemory(eval(memory + (+text * -1)).toString())
         }
-        return;
+        break;
+      case 'm+':
+        if (memory === '0') { setMemory(text); console.log('memory', memory) }
+        else {
+          setMemory(eval(memory + '+' + text).toString())
+          console.log('memory', memory)
+        }
+        break;
       case '=':
-        if (text === '') return
-        const operator: string = (values.slice(-1).toString())
+        if (text === '0') return
         if (operator.match(reg)) return;
         changeOperator(values)
-        const result = (eval(values.join('')));
-        setValues(() => [parseFloat(result.toFixed(2)).toString()]);
-        setText(parseFloat(result.toFixed(2)).toString());
+        setResult(eval(values.join('')));
         break;
       case ',':
         if (text.includes('.')) return;
         setText(text + '.');
         setValues((state) => [...state, '.'])
-        return;
+        break;
       default:
         if (text === '0' && num != ',') {
           setText(num);
           setValues([]);
-        } else setText(text + num)
+          console.log('result', result)
+          console.log('values', values)
+          console.log('text', text)
+        } else if (result !== 0 && !operator.match(reg)) {
+          console.log('operator', operator)
+          console.log('result', result)
+          setText(num);
+          setValues([]);
+          setResult(0)
+        }
+        else setText(text + num);
         setValues((state) => [...state, num]);
+        console.log('result', result)
+        console.log('values', values)
+        console.log('text', text)
         return;
     }
   }
