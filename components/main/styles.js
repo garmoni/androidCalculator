@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
       padding: 5,
-      overflowY: 'hidden',
+      overflow: 'hidden',
       marginTop: 20,
       display: 'flex',
       alignItems: 'center',
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
       color: '#fff',
       width: '100%',
       textAlign: 'right',
-      whiteSpace: 'nowrap', 
     },
   });
 

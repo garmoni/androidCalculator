@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import Buttons from '../buttons/Buttons';
-import { getStyleText, findLastOperator, changeOperator } from './../operations/operations';
+import { getStyleText, findLastOperator, changeOperator } from './../operations/Operations';
 import styles from './styles'
 
 export default function Main() {
   const [text, setText] = useState('0');
   const [memory, setMemory] = useState('0');
   const [values, setValues] = useState<string[]>(['0']);
-  const [result, setResult] = useState(0);
+  const [result, setResult] = useState<number | null>(null);
   const reg = new RegExp(/^[\+\-\×\÷]$/);
-  let lastNumber: number;
+  let lastNumber = findLastOperator(values);
   const operator: string = (values.slice(-1).toString())
 
   useEffect(() => {
-    console.log('useEffect result', result)
-    if (result !== 0){
+    if (result !== null){
       setValues(() => [parseFloat(result.toFixed(2)).toString()]);
       setText(parseFloat(result.toFixed(2)).toString());
-      console.log('useEffect result !== 0', result)
     }    
 }, [result]);
 
@@ -54,7 +52,6 @@ export default function Main() {
         setText(text.substring(0, text.length - 1));
         break;
       case '±':
-        lastNumber = findLastOperator(values);
         if (!lastNumber) {
           setValues([(+text * -1).toString()]);
           setText((+text * -1).toString())
@@ -69,7 +66,6 @@ export default function Main() {
         setValues((state) => [...state]);
         break;
       case '%':
-        lastNumber = findLastOperator(values);
         const procent = (+text / 100).toString()
         if (!lastNumber) {
           setValues(() => [procent]);
@@ -112,24 +108,17 @@ export default function Main() {
         setValues((state) => [...state, '.'])
         break;
       default:
+        console.log('operator.match(reg)', operator.match(reg))
         if (text === '0' && num != ',') {
           setText(num);
           setValues([]);
-          console.log('result', result)
-          console.log('values', values)
-          console.log('text', text)
-        } else if (result !== 0 && !operator.match(reg)) {
-          console.log('operator', operator)
-          console.log('result', result)
+        } else if (result !== null && !operator.match(reg)) {
           setText(num);
           setValues([]);
-          setResult(0)
+          setResult(null)
         }
         else setText(text + num);
         setValues((state) => [...state, num]);
-        console.log('result', result)
-        console.log('values', values)
-        console.log('text', text)
         return;
     }
   }
